@@ -1,0 +1,8 @@
+main: com.danin.main.Main
+name: DynamicLoading
+version: 0.9
+api-version: 1.18
+
+commands:
+   connect:
+      description: Teleports players between servers

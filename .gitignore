@@ -1,0 +1,4 @@
+.vscode
+target/generated-sources
+target/maven-status
+target/maven-archiver
