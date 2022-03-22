@@ -35,11 +35,12 @@ public class HandleConnection implements Runnable{
         }
         
         switch(connectToDLS()){
+            case 0: break;
             case 1: player.sendMessage("Error on DLS. Please contact an admin."); return;
             case 2: player.sendMessage("Error on DLS. Please contact an admin."); return;
             case 3: player.sendMessage("Error on DLS. Please contact an admin."); return;
-            case 4: player.sendMessage("Error on DLS. Please contact an admin."); return;
-            default: break;
+            case 4: player.sendMessage("Too many servers online"); return;
+            default: player.sendMessage("Error on DLS. Please contact an admin."); return;
         }
 
         try {
@@ -61,7 +62,7 @@ public class HandleConnection implements Runnable{
     }
 
     private int connectToDLS(){
-        int status = 4;
+        int status = 5;
         try{
             Socket socket = new Socket("localhost", 59827);
             DataInputStream input = new DataInputStream(socket.getInputStream());
