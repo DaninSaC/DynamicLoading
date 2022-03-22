@@ -1,6 +1,6 @@
 main: com.danin.main.Main
 name: DynamicLoading
-version: 0.9
+version: 1.0
 api-version: 1.18
 
 commands:

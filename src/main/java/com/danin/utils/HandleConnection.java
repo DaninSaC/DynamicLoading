@@ -29,40 +29,40 @@ public class HandleConnection implements Runnable{
         
         switch(serverStatus.getStatus(serverip, serverport)){
             case 0: break;
-            case -1: player.sendMessage(ChatColor.RED+"The server are"); return;
-            case -2: player.sendMessage(ChatColor.RED+"A IOException occured"); return;
+            case -1: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("Server timed out"); return;
+            case -2: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("An IOEXception occured getting server status"); return;
             default: pluginMessage.connectPlayer(player, servername); return;
         }
         
         switch(connectToDLS()){
             case 0: break;
-            case 1: player.sendMessage("Error on DLS. Please contact an admin."); return;
-            case 2: player.sendMessage("Error on DLS. Please contact an admin."); return;
-            case 3: player.sendMessage("Error on DLS. Please contact an admin."); return;
-            case 4: player.sendMessage("Too many servers online"); return;
-            default: player.sendMessage("Error on DLS. Please contact an admin."); return;
+            case 1: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("DLS: Failed validating server info"); return;
+            case 2: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("DLS: Went out of memory to use for the servers"); return;
+            case 3: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("DLS: An IOException occured"); return;
+            default: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); return;
         }
 
         try {
             for(int i = 0; i < 30; i++){
                 switch(serverStatus.getStatus(serverip, serverport)){
                     case 0: break;
-                    case -1: player.sendMessage(ChatColor.RED+"Failed to send you to the server. Please contact an admin about this."); return;
-                    case -2: player.sendMessage(ChatColor.RED+"Failed to send you to the server. Please contact an admin about this."); return;
+                    case -1: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("Server timed out"); return;
+                    case -2: player.sendMessage(ChatColor.RED+"Failed to send you to the server"); Bukkit.getLogger().warning("An IOEXception occured getting server status"); return;
                     default: pluginMessage.connectPlayer(player, servername); return;
                 }
                 Thread.sleep(1000);
             }
-            player.sendMessage(ChatColor.RED+"Failed to send you to the server. Please contact an admin about this.");
+            player.sendMessage(ChatColor.RED+"Failed to send you to the server");
             Bukkit.getLogger().warning("Server doesn't respond.");
         } catch (InterruptedException e) {
             e.printStackTrace();
-            player.sendMessage(ChatColor.RED+"Failed to send you to the server. Please contact an admin about this.");
+            player.sendMessage(ChatColor.RED+"Failed to send you to the server");
+            Bukkit.getLogger().warning("Thread interrupted");
         }
     }
 
     private int connectToDLS(){
-        int status = 5;
+        int status = 10;
         try{
             Socket socket = new Socket("localhost", 59827);
             DataInputStream input = new DataInputStream(socket.getInputStream());
@@ -78,7 +78,8 @@ public class HandleConnection implements Runnable{
 
         }catch(IOException e){
             e.printStackTrace();
-            player.sendMessage(ChatColor.RED+"Failed to send you to the server. Please contact an admin about this.");
+            player.sendMessage(ChatColor.RED+"Failed to send you to the server");
+            Bukkit.getLogger().warning("IOException trying connecting to DLS");
         }
 
         return status;
